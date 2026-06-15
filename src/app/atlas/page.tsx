@@ -8,7 +8,7 @@ import { AtlasMap } from "@/components/AtlasMap";
 import { CompanySearch } from "@/components/CompanySearch";
 import { Disclaimer } from "@/components/Disclaimer";
 import { StockAnalysisPanel } from "@/components/StockAnalysisPanel";
-import { companies, type Company } from "@/lib/companies";
+import type { Company } from "@/lib/companies";
 import type { StockQuote, TimeRange } from "@/types/stock";
 
 export default function AtlasPage() {

@@ -4,6 +4,7 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
 import { PointerEvent, WheelEvent, useEffect, useRef, useState } from "react";
 import { geoEquirectangular, geoPath, type GeoPermissibleObjects } from "d3-geo";
 import { feature, mesh } from "topojson-client";
+import type { GeometryObject, Topology } from "topojson-specification";
 import landTopo from "world-atlas/land-50m.json";
 import countriesTopo from "world-atlas/countries-50m.json";
 import { companies, type Company } from "@/lib/companies";
@@ -23,8 +24,8 @@ const projection = geoEquirectangular()
   .precision(0.1);
 
 const path = geoPath(projection);
-const landTopology = landTopo as any;
-const countriesTopology = countriesTopo as any;
+const landTopology = landTopo as unknown as Topology<{ land: GeometryObject }>;
+const countriesTopology = countriesTopo as unknown as Topology<{ countries: GeometryObject }>;
 const landFeature = feature(landTopology, landTopology.objects.land) as unknown as GeoJSON.Feature;
 const countryMesh = mesh(countriesTopology, countriesTopology.objects.countries) as unknown as GeoPermissibleObjects;
 const landPath = path(landFeature as GeoPermissibleObjects) ?? "";
@@ -88,7 +89,6 @@ export function AtlasMap({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -101,7 +101,6 @@ export function AtlasMap({
       x: MAP_WIDTH / 2 - position.x * nextZoom,
       y: MAP_HEIGHT / 2 - position.y * nextZoom
     }, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCompany]);
 
   function zoomAt(nextZoom: number, centerX = MAP_WIDTH / 2, centerY = MAP_HEIGHT / 2) {
