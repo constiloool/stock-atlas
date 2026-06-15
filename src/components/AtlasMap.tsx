@@ -171,7 +171,7 @@ export function AtlasMap({
       onPointerCancel={endDrag}
       className={`relative touch-none select-none overflow-hidden ${
         fullscreen
-          ? "h-screen w-screen cursor-grab bg-[radial-gradient(circle_at_50%_42%,rgba(111,143,99,0.18),transparent_56%),linear-gradient(180deg,#102016_0%,#122719_54%,#0a140d_100%)]"
+          ? "h-full min-h-[520px] w-full cursor-grab bg-[radial-gradient(circle_at_50%_42%,rgba(111,143,99,0.18),transparent_56%),linear-gradient(180deg,#102016_0%,#122719_54%,#0a140d_100%)]"
           : "min-h-[460px] rounded-[4px] border border-birch/12 bg-[radial-gradient(circle_at_50%_45%,rgba(60,74,51,0.42),transparent_48%),linear-gradient(180deg,rgba(7,18,8,0.92),rgba(2,7,3,0.96))] p-4 sm:p-6"
       } ${dragging ? "cursor-grabbing" : ""}`}
     >
