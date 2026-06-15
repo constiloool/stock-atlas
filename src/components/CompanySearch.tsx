@@ -21,7 +21,9 @@ export function CompanySearch({
   const [resultList, setResultList] = useState<Company[]>([]);
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const trimmed = query.trim();
+    const formData = new FormData(event.currentTarget);
+    const trimmed = String(formData.get("company-search") ?? query).trim();
+    setQuery(trimmed);
     setSubmitted(true);
     setMessage(null);
     if (!trimmed) {
@@ -61,19 +63,20 @@ export function CompanySearch({
   }
 
   return (
-    <div className={`${compact ? "w-full sm:w-[420px]" : ""} rounded-[18px] border border-birch/16 bg-[#102016]/54 p-3 shadow-2xl shadow-black/15 backdrop-blur-xl`}>
+    <div className={`${compact ? "w-full sm:w-[390px]" : ""} rounded-full border border-birch/14 bg-[#102016]/38 p-2 shadow-2xl shadow-black/20 backdrop-blur-2xl`}>
       <form onSubmit={submit} className="flex items-center gap-2">
         <label className="relative min-w-0 flex-1">
           <span className="sr-only">Search company or ticker</span>
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-birch/40" />
           <input
+            name="company-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search company or ticker..."
-            className="h-11 w-full rounded-full border border-birch/14 bg-[#102016]/62 pl-9 pr-4 text-sm text-birch outline-none transition placeholder:text-birch/42 focus:border-[#bedcaa]/60 focus:ring-2 focus:ring-[#bedcaa]/10"
+            className="h-10 w-full rounded-full border border-birch/10 bg-[#061008]/42 pl-9 pr-4 text-sm text-birch outline-none transition placeholder:text-birch/42 focus:border-[#bedcaa]/50 focus:ring-2 focus:ring-[#bedcaa]/10"
           />
         </label>
-        <button className="h-11 rounded-full bg-birch/92 px-4 text-sm font-semibold text-charcoal transition hover:bg-white" type="submit">
+        <button className="h-10 rounded-full bg-birch/86 px-4 text-sm font-semibold text-charcoal transition hover:bg-white" type="submit">
           Search
         </button>
       </form>

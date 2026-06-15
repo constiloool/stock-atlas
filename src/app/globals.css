@@ -89,6 +89,18 @@ input {
   animation: fog-drift 16s ease-in-out infinite alternate;
 }
 
+.forest-texture {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(190, 220, 170, 0.12), transparent 14%),
+    radial-gradient(circle at 77% 12%, rgba(236, 232, 224, 0.09), transparent 16%),
+    radial-gradient(circle at 24% 78%, rgba(111, 143, 99, 0.12), transparent 18%),
+    radial-gradient(circle at 84% 76%, rgba(190, 220, 170, 0.08), transparent 19%),
+    repeating-linear-gradient(118deg, rgba(236, 232, 224, 0.028) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(28deg, rgba(111, 143, 99, 0.03) 0 1px, transparent 1px 12px);
+  filter: contrast(1.12) saturate(1.08);
+  mix-blend-mode: screen;
+}
+
 .map-breathe {
   animation: map-breathe 11s ease-in-out infinite;
 }
