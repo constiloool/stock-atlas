@@ -101,6 +101,160 @@ input {
   mix-blend-mode: screen;
 }
 
+.living-map-surface {
+  --mouse-x: 50%;
+  --mouse-y: 48%;
+  --parallax-x: 0%;
+  --parallax-y: 0%;
+  background:
+    radial-gradient(circle at 58% 18%, rgba(236, 232, 224, 0.15), transparent 25%),
+    radial-gradient(circle at 24% 72%, rgba(111, 143, 99, 0.18), transparent 30%),
+    linear-gradient(180deg, #17261a 0%, #102016 46%, #08130a 100%);
+  isolation: isolate;
+  touch-action: none;
+}
+
+.living-atmosphere,
+.living-depth,
+.living-fog,
+.living-fog-mask,
+.living-mouse-light,
+.living-mouse-clear {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.living-atmosphere {
+  z-index: 0;
+  transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(1.04);
+  background:
+    radial-gradient(circle at 48% 26%, rgba(190, 220, 170, 0.16), transparent 32%),
+    radial-gradient(circle at 76% 56%, rgba(236, 232, 224, 0.08), transparent 28%),
+    repeating-linear-gradient(116deg, rgba(236, 232, 224, 0.026) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(27deg, rgba(111, 143, 99, 0.03) 0 1px, transparent 1px 14px);
+  opacity: 0.78;
+  will-change: transform;
+}
+
+.living-depth {
+  z-index: 12;
+  background:
+    radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(244, 231, 178, 0.11), rgba(236, 232, 224, 0.035) 18%, transparent 36%),
+    radial-gradient(ellipse at center, transparent 46%, rgba(3, 8, 4, 0.48) 100%);
+  mix-blend-mode: screen;
+}
+
+.living-fog {
+  z-index: 20;
+  opacity: 0.66;
+  filter: blur(22px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.living-fog-a {
+  inset: -12% -20%;
+  background:
+    radial-gradient(ellipse at 16% 18%, rgba(236, 232, 224, 0.2), transparent 22%),
+    radial-gradient(ellipse at 62% 24%, rgba(236, 232, 224, 0.14), transparent 24%),
+    radial-gradient(ellipse at 38% 78%, rgba(190, 220, 170, 0.11), transparent 28%);
+  animation: living-fog-a 26s ease-in-out infinite alternate;
+}
+
+.living-fog-b {
+  inset: -10% -16%;
+  background:
+    radial-gradient(ellipse at 80% 22%, rgba(236, 232, 224, 0.16), transparent 20%),
+    radial-gradient(ellipse at 18% 58%, rgba(236, 232, 224, 0.11), transparent 26%),
+    radial-gradient(ellipse at 68% 78%, rgba(190, 220, 170, 0.12), transparent 22%);
+  animation: living-fog-b 34s ease-in-out infinite alternate;
+}
+
+.living-fog-c {
+  inset: -6% -12%;
+  background:
+    linear-gradient(108deg, transparent 0%, rgba(236, 232, 224, 0.08) 34%, transparent 58%),
+    linear-gradient(17deg, transparent 8%, rgba(190, 220, 170, 0.06) 46%, transparent 78%);
+  animation: living-fog-c 42s linear infinite;
+}
+
+.living-fog-mask {
+  z-index: 21;
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(16, 32, 22, 0.34) 0%, rgba(16, 32, 22, 0.18) 14%, transparent 32%);
+  mix-blend-mode: multiply;
+}
+
+.living-mouse-light {
+  z-index: 22;
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(244, 231, 178, 0.15), rgba(236, 232, 224, 0.04) 18%, transparent 34%);
+  mix-blend-mode: screen;
+}
+
+.living-mouse-clear {
+  z-index: 23;
+  background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 0 16%, rgba(6, 15, 8, 0.07) 42%, transparent 62%);
+}
+
+.living-city-layer {
+  filter: drop-shadow(0 0 7px rgba(244, 231, 178, 0.18));
+}
+
+.living-city-light {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: living-city-pulse 5.8s ease-in-out infinite;
+}
+
+.living-city-light-2 {
+  animation-delay: 1.4s;
+}
+
+.living-city-light-3 {
+  animation-delay: 2.6s;
+}
+
+@keyframes living-city-pulse {
+  0%,
+  100% {
+    opacity: calc(0.46 + var(--city-intensity) * 0.42);
+    transform: scale(1);
+  }
+  50% {
+    opacity: calc(0.56 + var(--city-intensity) * 0.42);
+    transform: scale(1.08);
+  }
+}
+
+@keyframes living-fog-a {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.05);
+  }
+}
+
+@keyframes living-fog-b {
+  from {
+    transform: translate3d(3%, 1%, 0) scale(1.04);
+    opacity: 0.52;
+  }
+  to {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+    opacity: 0.72;
+  }
+}
+
+@keyframes living-fog-c {
+  from {
+    transform: translate3d(-4%, 0, 0);
+  }
+  to {
+    transform: translate3d(4%, 0, 0);
+  }
+}
+
 .map-breathe {
   animation: map-breathe 11s ease-in-out infinite;
 }
