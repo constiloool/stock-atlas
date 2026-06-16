@@ -9,16 +9,10 @@
     "lint": "eslint . --max-warnings=0"
   },
   "dependencies": {
-    "@types/d3-geo": "^3.1.0",
-    "@types/topojson-client": "^3.1.5",
-    "d3-geo": "^3.1.1",
-    "lightweight-charts": "^5.2.0",
     "lucide-react": "^0.468.0",
     "next": "^15.0.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "topojson-client": "^3.1.0",
-    "world-atlas": "^2.0.2"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",
