@@ -1,20 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { PointerEvent, useRef } from "react";
+import { PointerEvent, useRef, useState } from "react";
+import { companies, type Company } from "@/lib/companies";
+import { AtlasSearch } from "./AtlasSearch";
 import { CityLightsLayer } from "./CityLightsLayer";
+import { CompanyMarkersLayer } from "./CompanyMarkersLayer";
 import { FogLayer } from "./FogLayer";
 import { InteractionLight } from "./InteractionLight";
 import { MapControls } from "./MapControls";
-import { MAP_HEIGHT, MAP_WIDTH, MapDefs, WorldMapLayer } from "./WorldMapLayer";
+import { MAP_HEIGHT, MAP_WIDTH, MapDefs, WorldMapLayer, projectPoint } from "./WorldMapLayer";
 import { useMapTransform } from "./useMapTransform";
 
 export function LivingMistMap() {
+  const router = useRouter();
   const surfaceRef = useRef<HTMLElement | null>(null);
   const mapGroupRef = useRef<SVGGElement | null>(null);
   const mouseRafRef = useRef<number | null>(null);
   const transform = useMapTransform(mapGroupRef, surfaceRef);
+  const [activeCompany, setActiveCompany] = useState<Company | null>(null);
+  const [hoveredCompany, setHoveredCompany] = useState<Company | null>(null);
 
   function handlePointerMove(event: PointerEvent<HTMLElement>) {
     transform.handlePointerMove(event);
@@ -35,6 +42,17 @@ export function LivingMistMap() {
     });
   }
 
+  function focusCompany(company: Company) {
+    const point = projectPoint(company.lat, company.lon);
+    setActiveCompany(company);
+    setHoveredCompany(company);
+    transform.focusPoint(point.x, point.y, 1.75);
+  }
+
+  function openCompany(company: Company) {
+    router.push(`/company/${encodeURIComponent(company.ticker)}`);
+  }
+
   return (
     <section
       ref={surfaceRef}
@@ -53,6 +71,13 @@ export function LivingMistMap() {
         <g ref={mapGroupRef} transform={`translate(${transform.view.x} ${transform.view.y}) scale(${transform.view.zoom})`} className={transform.dragging ? "" : "transition-transform duration-200 ease-out"}>
           <WorldMapLayer />
           <CityLightsLayer />
+          <CompanyMarkersLayer
+            companies={companies}
+            activeTicker={activeCompany?.ticker ?? hoveredCompany?.ticker ?? null}
+            onHover={setHoveredCompany}
+            onLeave={() => setHoveredCompany(activeCompany)}
+            onOpen={openCompany}
+          />
         </g>
       </svg>
 
@@ -74,6 +99,19 @@ export function LivingMistMap() {
           </div>
         </div>
       </header>
+
+      <div className="absolute left-4 top-[74px] z-30 w-[calc(100%-2rem)] sm:left-6 sm:top-[86px] sm:w-[390px]" onPointerDown={(event) => event.stopPropagation()}>
+        <AtlasSearch companies={companies} activeTicker={activeCompany?.ticker ?? null} onFocusCompany={focusCompany} onOpenCompany={openCompany} />
+      </div>
+
+      {hoveredCompany ? (
+        <div className="pointer-events-none absolute bottom-16 left-4 z-30 max-w-[calc(100%-2rem)] rounded-[16px] border border-birch/12 bg-[#102016]/42 p-4 shadow-2xl shadow-black/20 backdrop-blur-2xl sm:left-6 sm:max-w-sm">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#bedcaa]">{hoveredCompany.ticker}</p>
+          <h2 className="mt-1 text-lg font-semibold text-birch">{hoveredCompany.name}</h2>
+          <p className="mt-2 text-sm text-birch/58">{hoveredCompany.location}</p>
+          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-birch/42">{hoveredCompany.sector}</p>
+        </div>
+      ) : null}
 
       <div onPointerDown={(event) => event.stopPropagation()}>
         <MapControls onZoomIn={transform.zoomIn} onZoomOut={transform.zoomOut} onReset={transform.reset} />

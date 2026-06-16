@@ -60,6 +60,17 @@ export function useMapTransform(mapRef: RefObject<SVGGElement | null>, surfaceRe
     applyView(DEFAULT_VIEW, true);
   }
 
+  function focusPoint(x: number, y: number, zoom = 1.75) {
+    applyView(
+      {
+        zoom,
+        x: MAP_WIDTH / 2 - x * zoom,
+        y: MAP_HEIGHT / 2 - y * zoom
+      },
+      true
+    );
+  }
+
   function handleWheel(event: WheelEvent<HTMLElement>) {
     event.preventDefault();
     const rect = surfaceRef.current?.getBoundingClientRect();
@@ -112,6 +123,7 @@ export function useMapTransform(mapRef: RefObject<SVGGElement | null>, surfaceRe
     endDrag,
     zoomIn: () => zoomAt(viewRef.current.zoom * 1.18),
     zoomOut: () => zoomAt(viewRef.current.zoom * 0.84),
-    reset
+    reset,
+    focusPoint
   };
 }

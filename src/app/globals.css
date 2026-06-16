@@ -214,6 +214,16 @@ input {
   animation-delay: 2.6s;
 }
 
+.atlas-company-marker {
+  filter: drop-shadow(0 0 5px rgba(244, 231, 178, 0.18));
+  transition: opacity 180ms ease;
+}
+
+.atlas-company-marker:hover,
+.atlas-company-marker:focus {
+  filter: drop-shadow(0 0 10px rgba(158, 232, 137, 0.36));
+}
+
 @keyframes living-city-pulse {
   0%,
   100% {
